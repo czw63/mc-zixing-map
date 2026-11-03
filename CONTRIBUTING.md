@@ -59,6 +59,24 @@
 - 写「开关在入口右手边地面上」，不要写「正常开启」这种没有信息量的话
 - 有坑一定要写，比如「挂机别站在 XX 那格」「离开前记得关灯」
 
+## 补假人信息
+
+假人清单在 `data/bots.json`。名字（游戏内 ID）必须准确，其余字段照设施那样填：
+
+```json
+{
+  "name": "bot_sleep",
+  "purpose": "挂 XX 农场",
+  "location": "工业村旁边",
+  "status": "online",
+  "notes": "别踢，正在挂机"
+}
+```
+
+**在线状态不用手改**，`scripts/check_bots.py` 会覆盖 `status`、`onlineCount`、`lastChecked`。
+
+要注意：服务器只公开在线玩家，**离线的假人查不到**。如果你知道某个假人平时存在但现在没在线，照样可以把名字写进 `bots` 数组——脚本不会删你加的条目，只会把状态标成 `offline`。
+
 ## 加一张地图上的点
 
 `data/facilities.json` 里的 `coords` 就是地图标记位置，改坐标地图自动跟着变。

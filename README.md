@@ -21,6 +21,8 @@ index.html                          首页（Liquid Glass 风格，地图居中�
 tiles/overworld/{z}/{x}/{y}.webp    稀疏瓦片金字塔
 waypoints.json                      主世界路径点（Xaero 原始数据转换）
 data/facilities.json                设施数据源（名称/别名/坐标/用途/状态）
+data/bots.json                      服务器假人清单 + 最近检查状态
+scripts/check_bots.py               SLP 查询服务器在线状态与假人
 manifest.json                       构建统计（瓦片数、体积、坐标范围）
 vendor/                             Leaflet 1.9.4、liquid-glass（均含许可证）
 build.py                            从 Xaero 数据重建瓦片
@@ -71,6 +73,25 @@ cd xaerotools && cargo build --release -p xaerotools   # 包名是 xaerotools，
 ```
 
 编译后先验证：`doctor --root <xaero目录>` 应输出 `all clear`。
+
+## 服务器假人列表
+
+`data/bots.json` 存假人清单，首页读它渲染。字段和设施一样：`name` / `purpose` / `location` / `status` / `notes`。
+
+`serverOnline`、`onlineCount`、`lastChecked` 和每个假人的 `status` 由脚本自动更新：
+
+```bash
+env -u PYTHONPATH /usr/bin/python3 scripts/check_bots.py
+```
+
+脚本用 **Minecraft SLP（Server List Ping）** 直连 `mc.zixing.fun:7030`，只读，不需要 RCON 或后台权限。
+
+两个限制要说清楚：
+
+- SLP 的 `players.sample` **只包含服务器愿意公开的在线玩家**，所以离线假人不会出现在列表里
+- 页面显示的是**最近一次检查的快照**，不是实时在线——浏览器发不了 MC 协议，静态站没法自己查
+
+脚本会把你手动加过的假人保留下来，只更新状态；如果发现列表里没有的在线玩家，会自动补一条并把 `purpose` 留空。服务器关服时记 `serverOnline: false`，不会假装有新数据。
 
 ## 部署
 
