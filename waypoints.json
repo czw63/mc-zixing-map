@@ -1,0 +1,110 @@
+[
+  {
+    "name": "繁华森林",
+    "initials": "繁",
+    "x": 1495,
+    "y": "70",
+    "z": 165,
+    "color": 9,
+    "disabled": false
+  },
+  {
+    "name": "龙宫",
+    "initials": "龙",
+    "x": 1296,
+    "y": "84",
+    "z": -1608,
+    "color": 3,
+    "disabled": false
+  },
+  {
+    "name": "全物种",
+    "initials": "全",
+    "x": -1556,
+    "y": "141",
+    "z": -1068,
+    "color": 0,
+    "disabled": false
+  },
+  {
+    "name": "蠹虫笼",
+    "initials": "蠹",
+    "x": 1375,
+    "y": "63",
+    "z": -2136,
+    "color": 5,
+    "disabled": false
+  },
+  {
+    "name": "女巫塔",
+    "initials": "红石",
+    "x": -73,
+    "y": "300",
+    "z": -2104,
+    "color": 11,
+    "disabled": false
+  },
+  {
+    "name": "袭击塔",
+    "initials": "袭",
+    "x": -2136,
+    "y": "221",
+    "z": 696,
+    "color": 8,
+    "disabled": false
+  },
+  {
+    "name": "工业村",
+    "initials": "工",
+    "x": 553,
+    "y": "70",
+    "z": -268,
+    "color": 6,
+    "disabled": false
+  },
+  {
+    "name": "传送门",
+    "initials": "传",
+    "x": 1491,
+    "y": "81",
+    "z": 1756,
+    "color": 9,
+    "disabled": false
+  },
+  {
+    "name": "古城2",
+    "initials": "古",
+    "x": 7111,
+    "y": "-34",
+    "z": -3238,
+    "color": 1,
+    "disabled": false
+  },
+  {
+    "name": "古城3",
+    "initials": "古",
+    "x": 8172,
+    "y": "-50",
+    "z": -3239,
+    "color": 14,
+    "disabled": false
+  },
+  {
+    "name": "哨站",
+    "initials": "哨",
+    "x": -998,
+    "y": "84",
+    "z": -1242,
+    "color": 7,
+    "disabled": false
+  },
+  {
+    "name": "远古",
+    "initials": "远",
+    "x": 2036,
+    "y": "-49",
+    "z": -1452,
+    "color": 10,
+    "disabled": true
+  }
+]

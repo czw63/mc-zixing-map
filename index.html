@@ -1,0 +1,164 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><title>紫星服务器 · 玩家手册与地图</title>
+<link rel="stylesheet" href="vendor/liquid-glass.css">
+<link rel="stylesheet" href="vendor/leaflet.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Droid Sans Fallback",-apple-system,system-ui,sans-serif;color:#fff;overflow-x:hidden;background:#0b1018;
+ -webkit-font-smoothing:antialiased}
+/* 背景暂时留空：纯深色底，玻璃质感靠 tint + 高光边框 */
+body{background:
+ radial-gradient(1100px 720px at 50% -10%,#1b2540 0%,transparent 62%),
+ radial-gradient(900px 600px at 92% 8%,#141c33 0%,transparent 60%),
+ #0a0d16}
+.wrap{position:relative;z-index:1;max-width:1180px;margin:0 auto;padding:24px 24px 46px}
+
+/* 全部玻璃统一走库的变量 */
+.liquid-glass{
+  --lg-opacity:.14; --lg-blur:18px; --lg-saturate:200%;
+  --lg-border-opacity:.5; --lg-tint:236 242 255;
+  --lg-shadow:0 26px 70px rgb(0 0 0 / .5);
+}
+nav{border-radius:999px!important;display:flex;align-items:center;gap:3px;padding:9px 10px 9px 18px;--lg-radius:999px}
+.brand{display:flex;align-items:center;gap:10px;font-size:15.5px;font-weight:600}
+.logo{width:24px;height:24px;border-radius:8px;background:linear-gradient(150deg,#e0d4ff,#7dd3fc);
+ box-shadow:0 0 20px #c4b5fd88,inset 0 1px 0 #fff}
+.grow{flex:1}
+nav a{font-size:13.5px;color:rgba(255,255,255,.75);padding:8px 14px;border-radius:999px;text-decoration:none;transition:.18s}
+nav a:hover{background:rgba(255,255,255,.14);color:#fff}
+nav a.on{background:rgba(255,255,255,.2);color:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.45)}
+.join{padding:9px 19px;border-radius:999px;font-size:13.5px;font-weight:700;color:#0b1020;
+ background:linear-gradient(180deg,#fff,#dbe6ff);box-shadow:inset 0 1px 0 #fff,0 6px 20px rgba(255,255,255,.28)}
+
+.hero{padding:58px 2px 28px}
+.eyebrow{border-radius:999px!important;display:inline-flex;align-items:center;gap:9px;font-size:12.5px;padding:8px 16px;--lg-opacity:.13;--lg-radius:999px}
+.live{width:7px;height:7px;border-radius:50%;background:#5eead4;box-shadow:0 0 12px #5eead4}
+h1{font-size:52px;line-height:1.12;font-weight:700;letter-spacing:-1.4px;margin-top:20px;
+}
+h1 .dim{color:rgba(255,255,255,.62)}
+.hero p{margin-top:15px;font-size:16px;color:rgba(255,255,255,.8);line-height:1.7;max-width:560px}
+.acts{display:flex;gap:11px;margin-top:26px}
+.acts .liquid-glass{border-radius:999px!important;padding:0;--lg-radius:999px;--lg-opacity:.15}
+.acts .liquid-glass__content{padding:12px 23px;font-size:14px;font-weight:600}
+
+/* 地图卡：玻璃框 + 内部真实地图 */
+.mapcard{--lg-radius:30px;padding:11px;margin-top:12px}
+.mtop{display:flex;align-items:center;gap:9px;padding:3px 3px 11px}
+.srch{flex:1;border-radius:999px!important;padding:0;--lg-radius:999px;--lg-opacity:.12}
+.srch .liquid-glass__content{padding:12px 18px;font-size:13.5px;color:rgba(255,255,255,.62)}
+.sel{border-radius:999px!important;padding:0;--lg-radius:999px;--lg-opacity:.12}
+.sel .liquid-glass__content{padding:12px 17px;font-size:13px;color:rgba(255,255,255,.9);font-weight:500}
+#map{height:430px;border-radius:22px;overflow:hidden;background:#0b1018;
+ box-shadow:inset 0 0 0 1px rgba(255,255,255,.12),inset 0 3px 20px rgba(0,0,0,.55)}
+.leaflet-container{background:#0b1018!important}
+.leaflet-tile{image-rendering:pixelated}
+.leaflet-control-attribution{font-size:9px;background:rgba(11,16,24,.72)!important;color:#6e7789!important}
+.leaflet-control-zoom a{background:rgba(255,255,255,.16)!important;color:#fff!important;border:1px solid rgba(255,255,255,.24)!important;
+ -webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px)}
+.pin{width:13px;height:13px;border-radius:50%;background:radial-gradient(circle at 32% 28%,#fff,#fbbf24 55%,#f59e0b);
+ box-shadow:0 0 0 2px rgba(11,16,24,.85),0 0 18px #fbbf24cc}
+.bar{margin-top:11px;border-radius:20px!important;padding:0;--lg-radius:20px;--lg-opacity:.14}
+.bar .liquid-glass__content{display:flex;align-items:center;gap:15px;padding:13px 17px}
+.ic{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;font-size:19px;
+ background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.28);box-shadow:inset 0 1px 0 rgba(255,255,255,.45)}
+.bar h4{font-size:15px;display:flex;align-items:center;gap:9px}
+.tag{font-size:10.5px;padding:3px 10px;border-radius:999px;background:rgba(94,234,212,.2);
+ color:#a7f3ea;border:1px solid rgba(94,234,212,.4);font-weight:600}
+.bar small{display:block;margin-top:4px;font-size:12.5px;color:rgba(255,255,255,.68)}
+.go{margin-left:auto;border-radius:999px!important;padding:0;--lg-radius:999px;--lg-opacity:.16}
+.go .liquid-glass__content{padding:10px 18px;font-size:13px;font-weight:600;white-space:nowrap}
+
+h2{font-size:13px;letter-spacing:1.4px;color:rgba(255,255,255,.62);font-weight:600;margin:42px 4px 15px;
+}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:13px}
+.c{--lg-radius:22px;padding:0;transition:transform .22s}
+.c:hover{transform:translateY(-3px)}
+.c .liquid-glass__content{padding:19px}
+.cm{width:34px;height:34px;border-radius:11px;display:grid;place-items:center;font-size:16px;margin-bottom:13px;
+ background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.26);box-shadow:inset 0 1px 0 rgba(255,255,255,.45)}
+.c h5{font-size:14.5px;margin-bottom:7px;font-weight:600}
+.c p{font-size:12.5px;color:rgba(255,255,255,.66);line-height:1.6}
+.two{display:grid;grid-template-columns:1.35fr 1fr;gap:13px}
+.panel{--lg-radius:22px;padding:0}
+.panel .liquid-glass__content{padding:17px 20px}
+.row{display:flex;justify-content:space-between;padding:12px 0;font-size:13.5px;border-bottom:1px solid rgba(255,255,255,.1)}
+.row:last-child{border:0;padding-bottom:0}
+.row span{color:rgba(255,255,255,.5);font-size:12.5px}
+.note{font-size:12.8px;color:#fde68a;line-height:1.7;--lg-opacity:.1}
+footer{margin:40px 0 0;text-align:center;font-size:12px;color:rgba(255,255,255,.5)}
+</style></head><body>
+<svg aria-hidden="true" focusable="false" width="0" height="0" xmlns="http://www.w3.org/2000/svg">
+  <filter id="liquid-glass-filter" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
+    <feTurbulence type="fractalNoise" baseFrequency="0.008" numOctaves="2" seed="7" result="noise">
+      <animate attributeName="baseFrequency" dur="7s" values="0.008;0.0132;0.008" repeatCount="indefinite"/>
+    </feTurbulence>
+    <feDisplacementMap in="SourceGraphic" in2="noise" scale="18" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+</svg>
+
+
+<div class="wrap">
+<nav class="liquid-glass">
+<div class="liquid-glass__content" style="display:flex;align-items:center;gap:3px;flex:1">
+<div class="brand"><div class="logo"></div>紫星服务器</div><div class="grow"></div>
+<a class="on" href="#">主页</a><a href="#">入服指南</a><a href="#">设施手册</a><a href="#">交通</a><a href="#">服规</a>
+<span class="join">入服</span></div></nav>
+
+<div class="hero">
+<div class="eyebrow liquid-glass">
+<div class="liquid-glass__content" style="display:flex;align-items:center;gap:9px"><span class="live"></span>26.3 生电服 · 地图快照已更新</div></div>
+<h1>机器在哪，<br><span class="dim">地图上直接看。</span></h1>
+<p>三十多台农场与机器，坐标、开关位置、挂机方法，全在一个页面里。</p>
+<div class="acts">
+<div class="liquid-glass"><div class="liquid-glass__content">入服指南</div></div>
+<div class="liquid-glass"><div class="liquid-glass__content">查找设施</div></div>
+<div class="liquid-glass"><div class="liquid-glass__content">全屏地图 ↗</div></div>
+</div>
+</div>
+
+<div class="mapcard liquid-glass">
+<div class="liquid-glass__content">
+<div class="mtop">
+<div class="srch liquid-glass"><div class="liquid-glass__content">⌕&nbsp;&nbsp;搜索地点或机器名……</div></div>
+<div class="sel liquid-glass"><div class="liquid-glass__content">主世界 ▾</div></div>
+<div class="sel liquid-glass"><div class="liquid-glass__content">全部设施 ▾</div></div>
+</div>
+<div id="map"></div>
+<div class="bar liquid-glass">
+<div class="liquid-glass__content"><div class="ic">◈</div>
+<div><h4>工业村<span class="tag">中心</span></h4><small>主世界 · X 553 / Y 70 / Z -268 · 村民交易与物资集散</small></div>
+<div class="go liquid-glass"><div class="liquid-glass__content">查看使用说明 →</div></div></div></div>
+</div></div>
+
+<h2>手 册 分 类</h2>
+<div class="cards">
+<div class="c liquid-glass"><div class="liquid-glass__content"><div class="cm">⚙</div><h5>机械与农场</h5><p>女巫塔、袭击塔、猪人塔<br>开关位置与挂机方法</p></div></div>
+<div class="c liquid-glass"><div class="liquid-glass__content"><div class="cm">⇄</div><h5>交通物流</h5><p>地狱交通与传送门枢纽<br>主城到各区域的走法</p></div></div>
+<div class="c liquid-glass"><div class="liquid-glass__content"><div class="cm">▤</div><h5>公共仓储</h5><p>物资在哪、怎么取<br>存取约定</p></div></div>
+<div class="c liquid-glass"><div class="liquid-glass__content"><div class="cm">⌘</div><h5>常用指令</h5><p>返回主城、假人召唤<br>查询类指令</p></div></div>
+</div>
+
+<h2>最 近 更 新</h2>
+<div class="two">
+<div class="panel liquid-glass"><div class="liquid-glass__content">
+<div class="row"><div>地图快照更新至最新版本</div><span>今天</span></div>
+<div class="row"><div>新增「蠹虫笼」使用说明</div><span>2 天前</span></div>
+<div class="row"><div>袭击塔挂机位置调整</div><span>5 天前</span></div>
+</div></div>
+<div class="panel liquid-glass note"><div class="liquid-glass__content">
+地图为玩家探索快照，不代表服务器实时状态。设施是否可用，以手册标注的确认日期为准。</div></div>
+</div>
+
+<footer>紫星服务器 · 玩家手册 · 地图数据 Xaero</footer>
+</div>
+
+<script src="vendor/leaflet.js"></script>
+<script>
+const crs=L.extend({},L.CRS.Simple,{scale:z=>2**(z-7),zoom:s=>Math.log2(s)+7});
+const map=L.map('map',{crs,minZoom:0,maxZoom:8,zoomControl:true});
+L.tileLayer('tiles/overworld/{z}/{x}/{y}.webp',{tileSize:512,noWrap:true,minZoom:0,maxZoom:8,maxNativeZoom:7,
+ errorTileUrl:'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=',attribution:'Xaero · Leaflet'}).addTo(map);
+map.setView([268,553],6);
+function pin(p,n){const m=L.marker([-p[1],p[0]],{icon:L.divIcon({className:'',html:'<div class="pin"></div>',iconSize:[13,13],iconAnchor:[6,6]})}).addTo(map);m.bindTooltip(n,{direction:'top',offset:[0,-9]});return m;}
+pin([-73,-2104],'女巫塔');pin([553,-268],'工业村').openTooltip();pin([-2136,696],'袭击塔');
+pin([1495,165],'繁华森林');pin([1296,-1608],'龙宫');pin([1375,-2136],'蠹虫笼');pin([69,-26],'交易所');
+</script></body></html>

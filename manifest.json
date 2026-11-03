@@ -1,0 +1,26 @@
+{
+  "regions": 637,
+  "counts": {
+    "7": 637,
+    "6": 194,
+    "5": 75,
+    "4": 36,
+    "3": 19,
+    "2": 14,
+    "1": 10,
+    "0": 10
+  },
+  "totalTiles": 995,
+  "bytes": 142175804,
+  "nativeZoom": 7,
+  "tileSize": 512,
+  "transform": "Leaflet coords [-MC_Z, MC_X], CRS.Simple scale=2^(zoom-7); tile x=floor(X/(512*2^(7-zoom))), y=floor(Z/(512*2^(7-zoom)))",
+  "coreBounds": [
+    -24576,
+    -30208,
+    10752,
+    10240
+  ],
+  "source": "26.3生电(based on xplus).mrpack",
+  "waypoints": 12
+}
