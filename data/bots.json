@@ -5,7 +5,7 @@
   "onlineCount": 1,
   "maxPlayers": 200,
   "version": "26.3",
-  "lastChecked": "2026-11-03T20:53:01+08:00",
+  "lastChecked": "2026-11-03T20:53:05+08:00",
   "bots": [
     {
       "name": "bot_sleep",
