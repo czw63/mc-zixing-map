@@ -25,10 +25,9 @@ src/styles/theme.css           文档主题变量
 astro.config.mjs               侧边栏/站点配置。新增页面要在这里登记
 tiles/overworld/{z}/{x}/{y}.webp   地图瓦片。脚本生成，禁止手改
 data/facilities.json           设施数据源。地图标记和文档共用
-data/bots.json                 假人目录
+data/bots.json                 假人目录（哪个假人在哪、干什么用）
 waypoints.json                 Xaero 路径点导出，游戏数据转换而来
 vendor/                        Leaflet + liquid-glass，含许可证
-scripts/check_bots.py          SLP 查询服务器在线状态
 build.py                       从 Xaero region 重建瓦片（不常跑）
 ```
 
@@ -77,7 +76,7 @@ slug 就是文件路径去掉 `.md`。漏了第 3 步页面能访问但侧边栏
 - 设施用途、开关位置、挂机方法、假人职责——这些只有常玩的人知道，不知道就留 `null` 或写「待补」
 - `status` 默认 `unknown`，别因为名字像就填 `ok`
 - 路径点只证明有人在那里标过点，不证明机器能用
-- 服务器在线状态、TPS、人数，只能来自实际查询，不能猜
+- 服务器在线状态、TPS、人数，只能来自实际查询，不能猜。**假人目录不记录在线状态**，它只记哪个假人在哪、做什么用
 
 **坐标必须来自真实数据。** 设施坐标以 `waypoints.json` / `data/facilities.json` 为准，不要手打或估算。
 

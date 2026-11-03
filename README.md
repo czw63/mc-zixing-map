@@ -110,24 +110,13 @@ cd xaerotools && cargo build --release -p xaerotools   # 包名是 xaerotools，
 
 编译后先验证：`doctor --root <xaero目录>` 应输出 `all clear`。
 
-## 服务器假人列表
+## 假人目录
 
-`data/bots.json` 存假人清单，首页读它渲染。字段和设施一样：`name` / `purpose` / `location` / `status` / `notes`。
+`data/bots.json` 记录服务器上有哪些假人、各自放在哪里、做什么用。首页读它渲染成卡片。
 
-`serverOnline`、`onlineCount`、`lastChecked` 和每个假人的 `status` 由脚本自动更新：
+字段：`name`（游戏内 ID）、`purpose`（干什么）、`location`（在哪）、`owner`（谁维护）、`howTo`（怎么召唤）、`notes`（禁忌）。
 
-```bash
-env -u PYTHONPATH /usr/bin/python3 scripts/check_bots.py
-```
-
-脚本用 **Minecraft SLP（Server List Ping）** 直连 `mc.zixing.fun:7030`，只读，不需要 RCON 或后台权限。
-
-两个限制要说清楚：
-
-- SLP 的 `players.sample` **只包含服务器愿意公开的在线玩家**，所以离线假人不会出现在列表里
-- 页面显示的是**最近一次检查的快照**，不是实时在线——浏览器发不了 MC 协议，静态站没法自己查
-
-脚本会把你手动加过的假人保留下来，只更新状态；如果发现列表里没有的在线玩家，会自动补一条并把 `purpose` 留空。服务器关服时记 `serverOnline: false`，不会假装有新数据。
+**这里不记录在线状态。** 目录是给人看的资料，不是监控面板——假人开没开、挂没挂着，去游戏里看或者问人。
 
 ## 部署
 

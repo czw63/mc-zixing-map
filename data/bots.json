@@ -1,11 +1,6 @@
 {
-  "_说明": "假人目录。name 之外的字段手填；status 由 scripts/check_bots.py 辅助更新，仅作参考，不是实时在线。",
-  "_待补": "目前只确认到 bot_sleep 一个。其他假人把游戏内 ID 加进 bots 数组即可，字段不认识就留空。",
-  "serverOnline": true,
-  "onlineCount": 1,
-  "maxPlayers": 200,
-  "version": "26.3",
-  "lastChecked": "2026-11-03T20:53:24+08:00",
+  "_说明": "假人目录：记录服务器上有哪些假人、放在哪里、做什么用。字段不认识就留空，别凭名字猜。",
+  "_待补": "目前只确认到 bot_sleep 一个。其他假人的游戏内 ID 加进 bots 数组即可。",
   "bots": [
     {
       "name": "bot_sleep",
@@ -13,8 +8,7 @@
       "location": null,
       "owner": null,
       "howTo": null,
-      "notes": "服务器在线列表中实测到的假人，用途与所在位置待补。",
-      "status": "online"
+      "notes": null
     }
   ]
 }
