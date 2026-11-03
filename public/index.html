@@ -169,7 +169,7 @@ footer{margin:40px 0 0;text-align:center;font-size:12px;color:rgba(255,255,255,.
 <script>
 const crs=L.extend({},L.CRS.Simple,{scale:z=>2**(z-7),zoom:s=>Math.log2(s)+7});
 const map=L.map('map',{crs,minZoom:0,maxZoom:8,zoomControl:true});
-L.tileLayer('tiles/overworld/{z}/{x}/{y}.webp',{tileSize:512,noWrap:true,minZoom:0,maxZoom:8,maxNativeZoom:7,
+L.tileLayer('https://tiles.czw06.fun/tiles/overworld/{z}/{x}/{y}.webp',{tileSize:512,noWrap:true,minZoom:0,maxZoom:8,maxNativeZoom:7,
  errorTileUrl:'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=',attribution:'Xaero · Leaflet'}).addTo(map);
 map.setView([268,553],6);
 function pin(p,n){const m=L.marker([-p[1],p[0]],{icon:L.divIcon({className:'',html:'<div class="pin"></div>',iconSize:[13,13],iconAnchor:[6,6]})}).addTo(map);m.bindTooltip(n,{direction:'top',offset:[0,-9]});return m;}

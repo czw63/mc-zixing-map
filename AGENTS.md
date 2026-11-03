@@ -23,12 +23,13 @@ src/content/docs/docs/*.md     文档页。改这里就够，不用碰 HTML
 src/content.config.ts          Starlight 内容集合定义（别删，删了构建直接失败）
 src/styles/theme.css           文档主题变量
 astro.config.mjs               侧边栏/站点配置。新增页面要在这里登记
-tiles/overworld/{z}/{x}/{y}.webp   地图瓦片。脚本生成，禁止手改
+tiles/overworld/{z}/{x}/{y}.webp   地图瓦片。**不在 git 里**（.gitignore 忽略），托管在 R2
 data/facilities.json           设施数据源。地图标记和文档共用
 data/bots.json                 假人目录（哪个假人在哪、干什么用）
 waypoints.json                 Xaero 路径点导出，游戏数据转换而来
 vendor/                        Leaflet + liquid-glass，含许可证
 build.py                       从 Xaero region 重建瓦片（不常跑）
+scripts/upload_tiles.py        瓦片上传到 R2（build.py 之后跑）
 ```
 
 ## 构建与验证
@@ -84,7 +85,8 @@ slug 就是文件路径去掉 `.md`。漏了第 3 步页面能访问但侧边栏
 
 ## 不要做的事
 
-- **别改 `tiles/`**：脚本生成的，手改会被下次重建覆盖
+- **别把 `tiles/` 加回 git**：它已经在 `.gitignore` 里，托管在 R2。加回仓库会让 clone 变成 135 MB 且历史永久膨胀
+- **别改 `tiles/` 里的图**：脚本生成的，手改会被下次重建覆盖；改地图要重跑 `build.py` 再 `upload_tiles.py`
 - **别删 `vendor/` 里的许可证**：Leaflet 是 BSD-2，liquid-glass 是 MIT
 - **别提交** `node_modules/`、`dist/`、`.astro/`、截图、日志、原始 mrpack
 - **别装新依赖来解决排版问题**：现有 CSS 够用，加包会拖慢构建

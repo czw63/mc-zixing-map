@@ -22,7 +22,7 @@ src/content/docs/docs/*.md          文档页，Markdown，写成什么就渲染
 src/styles/theme.css                文档主题（深色 + 紫色强调）
 src/content.config.ts               Starlight 的内容集合定义
 astro.config.mjs                    Astro / Starlight 配置（侧边栏在这里）
-tiles/overworld/{z}/{x}/{y}.webp    稀疏瓦片金字塔
+tiles/overworld/{z}/{x}/{y}.webp    稀疏瓦片金字塔（**不进 git**，托管在 R2）
 waypoints.json                      主世界路径点（Xaero 原始数据转换）
 data/facilities.json                设施数据源（名称/别名/坐标/用途/状态）
 data/bots.json                      假人目录 + 最近检查状态
@@ -30,6 +30,7 @@ scripts/check_bots.py               SLP 查询服务器在线状态与假人
 manifest.json                       构建统计（瓦片数、体积、坐标范围）
 vendor/                             Leaflet 1.9.4、liquid-glass（均含许可证）
 build.py                            从 Xaero 数据重建瓦片
+scripts/upload_tiles.py            把瓦片上传到 R2
 CONTRIBUTING.md                     数据字段说明（设施、假人的 JSON 怎么填）
 ```
 
@@ -89,7 +90,31 @@ npm run build        # 生成 dist/，构建命令会把 data、vendor、tiles�
 npm run preview      # 预览构建结果
 ```
 
-`dist/` 不进仓库。
+`dist/` 不进仓库，`tiles/` 也不进——瓦片单独托管在 R2，构建时不再复制进 `dist/`。
+
+## 瓦片托管在 R2
+
+瓦片是二进制、会被整批替换，放 git 里只会让仓库无限膨胀（原本 995 张占了仓库 135 MB 的 97%）。现在：
+
+| 项 | 值 |
+| --- | --- |
+| Bucket | `mc-zixing-tiles`（APAC） |
+| 访问地址 | `https://tiles.czw06.fun/tiles/overworld/{z}/{x}/{y}.webp` |
+| 备用地址 | `https://pub-4815315953f84599892ace3141a638c8.r2.dev/tiles/...`（r2.dev，有速率限制） |
+| 免费额度 | 10 GB 存储，出口流量免费 |
+
+首页的 `L.tileLayer` 直接指向 `tiles.czw06.fun`，所以**更新地图不需要碰 git，也不消耗 Cloudflare Pages 的构建次数**。
+
+### 更新地图的流程
+
+```bash
+env -u PYTHONPATH /usr/bin/python3 build.py        # 1. 从 Xaero 数据重新生成瓦片
+CLOUDFLARE_API_TOKEN=xxx python3 scripts/upload_tiles.py   # 2. 上传到 R2
+```
+
+上传完刷新页面就能看到新地图。站点本身不用重新部署。
+
+`upload_tiles.py` 用 wrangler 逐文件上传（并发 10），995 张约 15-20 分钟。token 需要 `Workers R2 Storage:Edit` 权限。
 
 ## 重建瓦片
 

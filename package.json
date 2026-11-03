@@ -5,8 +5,9 @@
   "main": "test-browser.js",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build && cp -r data vendor tiles waypoints.json manifest.json dist/",
-    "preview": "astro preview"
+    "build": "astro build && cp -r data vendor waypoints.json manifest.json dist/",
+    "preview": "astro preview",
+    "tiles": "python3 scripts/upload_tiles.py"
   },
   "repository": {
     "type": "git",
