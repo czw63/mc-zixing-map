@@ -1,6 +1,10 @@
-# 编辑指南
+# 编辑指南（数据字段）
 
-改文档不需要懂代码，会写 Markdown 就行。改完 push 到 `master`，Cloudflare 会自动部署（约 30 秒），不用等谁手动发版。
+这份讲的是 **JSON 数据怎么填**：设施、假人的字段含义。
+
+**写文章 / 加页面**请看站点上的 [怎么改文档](https://mc-zixing-map-site.pages.dev/docs/contributing/) —— 那边讲的是 Markdown 怎么写、新页面怎么加。
+
+改完提交到 `master`，Cloudflare 会自动构建部署（约 1 分钟）。
 
 ## 最快上手：只改文字
 

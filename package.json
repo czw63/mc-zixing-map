@@ -1,0 +1,28 @@
+{
+  "name": "mc-zixing-map",
+  "version": "1.0.0",
+  "description": "Minecraft **26.3 生电服**（`mc.zixing.fun`）的玩家站：世界地图 + 路径点 + 设施手册。",
+  "main": "test-browser.js",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build && cp -r data vendor tiles waypoints.json manifest.json dist/",
+    "preview": "astro preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/czw63/mc-zixing-map.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/czw63/mc-zixing-map/issues"
+  },
+  "homepage": "https://github.com/czw63/mc-zixing-map#readme",
+  "dependencies": {
+    "@astrojs/starlight": "^0.42.8",
+    "astro": "^7.4.5"
+  },
+  "private": true
+}

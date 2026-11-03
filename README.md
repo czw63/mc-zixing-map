@@ -17,17 +17,40 @@ Minecraft **26.3 生电服**（`mc.zixing.fun`）的玩家站：世界地图 + �
 ## 目录结构
 
 ```
-index.html                          首页（Liquid Glass 风格，地图居中）
+public/index.html                   首页（Liquid Glass，地图居中）——纯静态，不经过 Astro
+src/content/docs/docs/*.md          文档页，Markdown，写成什么就渲染成什么
+src/styles/theme.css                文档主题（深色 + 紫色强调）
+src/content.config.ts               Starlight 的内容集合定义
+astro.config.mjs                    Astro / Starlight 配置（侧边栏在这里）
 tiles/overworld/{z}/{x}/{y}.webp    稀疏瓦片金字塔
 waypoints.json                      主世界路径点（Xaero 原始数据转换）
 data/facilities.json                设施数据源（名称/别名/坐标/用途/状态）
-data/bots.json                      服务器假人清单 + 最近检查状态
+data/bots.json                      假人目录 + 最近检查状态
 scripts/check_bots.py               SLP 查询服务器在线状态与假人
 manifest.json                       构建统计（瓦片数、体积、坐标范围）
 vendor/                             Leaflet 1.9.4、liquid-glass（均含许可证）
 build.py                            从 Xaero 数据重建瓦片
-CONTRIBUTING.md                     编辑指南：加设施、改说明、发布
+CONTRIBUTING.md                     数据字段说明（设施、假人的 JSON 怎么填）
 ```
+
+**站点结构**：`/` 是地图首页（`public/` 里的纯 HTML），`/docs/` 下是文档（Astro + Starlight 从 Markdown 生成）。两者共用同一套视觉语言。
+
+## 加一页文档
+
+在 `src/content/docs/docs/` 新建 `.md`，开头写上 frontmatter：
+
+```markdown
+---
+title: 页面标题
+description: 一句话说明
+---
+
+正文。
+```
+
+然后去 `astro.config.mjs` 的 `sidebar` 里加一行 `{ label: '显示名', slug: 'docs/文件名' }`，否则侧边栏没有入口。
+
+不需要改任何 HTML，也不需要碰 CSS。
 
 ## 坐标怎么对上
 
@@ -54,6 +77,19 @@ tile y = floor(MC_Z / (512 * 2^(7 - zoom)))
 路径点格式：`waypoint:名称:首字母:x:y:z:颜色:disabled:...`
 
 **地图是玩家客户端的探索快照**，不是服务器实时状态。新建筑要有人走到附近、让 Xaero 记录并保存，才有新数据。
+
+## 本地构建
+
+站点是 Astro 项目，需要 Node 20+：
+
+```bash
+npm install          # 首次
+npm run dev          # 本地开发，改 md 即时预览
+npm run build        # 生成 dist/，构建命令会把 data、vendor、tiles、waypoints.json 一并复制进去
+npm run preview      # 预览构建结果
+```
+
+`dist/` 不进仓库。
 
 ## 重建瓦片
 
@@ -97,9 +133,15 @@ env -u PYTHONPATH /usr/bin/python3 scripts/check_bots.py
 
 Cloudflare Pages 的 **Git 集成**项目 `mc-zixing-map-site`，生产分支 `master`。
 
-**push 到 master 就自动部署**，不需要手动上传，构建约 30 秒。
+| 配置项 | 值 |
+| --- | --- |
+| 构建命令 | `npm run build` |
+| 输出目录 | `dist` |
+| Node 版本 | 22（项目环境变量 `NODE_VERSION`） |
 
-站点是纯静态、无构建步骤——仓库根目录即站点根目录，所以别把调试文件、截图、日志提交进来。
+**push 到 master 就自动部署**，不需要手动上传。构建约 1 分钟（Astro 构建 + 复制 140 MB 瓦片）。
+
+免费版每月 500 次构建，正常改文档完全够用，但别写高频定时任务去触发部署。
 
 ## 隐私
 
