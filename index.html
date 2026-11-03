@@ -79,6 +79,17 @@ a.c{color:inherit;text-decoration:none}
 .c h5{font-size:14.5px;margin-bottom:7px;font-weight:600}
 .c p{font-size:12.5px;color:rgba(255,255,255,.66);line-height:1.6}
 .two{display:grid;grid-template-columns:1.35fr 1fr;gap:13px}
+.botgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:13px}
+.botcard{border-radius:20px;padding:16px 18px}
+.bothead{display:flex;align-items:center;gap:9px;margin-bottom:11px}
+.botname{font-family:ui-monospace,"DejaVu Sans Mono",monospace;font-size:13.5px;color:#fff;
+ background:rgba(255,255,255,.11);border:1px solid rgba(255,255,255,.16);padding:3px 9px;border-radius:7px}
+.botdot{width:7px;height:7px;border-radius:50%;flex:none;background:#64748b}
+.botrow{display:flex;gap:8px;font-size:12.5px;line-height:1.65;margin-top:6px}
+.botrow b{color:rgba(255,255,255,.45);font-weight:400;flex:none;min-width:44px}
+.botrow span{color:rgba(255,255,255,.78)}
+.botmiss{color:rgba(255,255,255,.32)!important;font-style:normal}
+.bothint{margin-top:13px;font-size:11.8px;color:rgba(255,255,255,.38);line-height:1.7}
 .panel{--lg-radius:22px;padding:0}
 .panel .liquid-glass__content{padding:17px 20px}
 .row{display:flex;justify-content:space-between;padding:12px 0;font-size:13.5px;border-bottom:1px solid rgba(255,255,255,.1)}
@@ -136,23 +147,12 @@ footer{margin:40px 0 0;text-align:center;font-size:12px;color:rgba(255,255,255,.
 <div class="c liquid-glass"><div class="liquid-glass__content"><div class="cm">⇄</div><h5>交通物流</h5><p>地狱交通与传送门枢纽<br>主城到各区域的走法</p></div></div>
 <div class="c liquid-glass"><div class="liquid-glass__content"><div class="cm">▤</div><h5>公共仓储</h5><p>物资在哪、怎么取<br>存取约定</p></div></div>
 <div class="c liquid-glass"><div class="liquid-glass__content"><div class="cm">⌘</div><h5>常用指令</h5><p>返回主城、假人召唤<br>查询类指令</p></div></div>
-<a class="c liquid-glass" href="#bots" style="text-decoration:none"><div class="liquid-glass__content"><div class="cm">◉</div><h5>服务器假人</h5><p>当前谁在挂机<br>用途与在线状态</p></div></a>
+<a class="c liquid-glass" href="#bots"><div class="liquid-glass__content"><div class="cm">◉</div><h5>假人目录</h5><p>服务器上都有哪些假人<br>各自负责什么</p></div></a>
 </div>
 
-<h2 id="bots">服 务 器 假 人</h2>
-<div class="two">
-<div class="panel liquid-glass"><div class="liquid-glass__content">
-<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
-  <span id="srv-dot" style="width:8px;height:8px;border-radius:50%;background:#64748b;box-shadow:0 0 10px #64748b"></span>
-  <strong id="srv-line" style="font-size:13.5px">读取中…</strong>
-  <span id="srv-time" style="margin-left:auto;font-size:11.5px;color:rgba(255,255,255,.42)"></span>
-</div>
-<div id="bot-list" style="font-size:13px;color:rgba(255,255,255,.55)">读取中…</div>
-</div></div>
-<div class="panel liquid-glass note"><div class="liquid-glass__content">
-假人状态是最近一次检查的快照，不是实时在线。服务器只公开在线玩家，离线假人不会出现在这里。
-</div></div>
-</div>
+<h2 id="bots">假 人 目 录</h2>
+<div id="bot-list" class="botgrid">读取中…</div>
+<p class="bothint" id="bot-hint"></p>
 
 <h2>最 近 更 新</h2>
 <div class="two">
@@ -179,43 +179,47 @@ function pin(p,n){const m=L.marker([-p[1],p[0]],{icon:L.divIcon({className:'',ht
 pin([-73,-2104],'女巫塔');pin([553,-268],'工业村').openTooltip();pin([-2136,696],'袭击塔');
 pin([1495,165],'繁华森林');pin([1296,-1608],'龙宫');pin([1375,-2136],'蠹虫笼');pin([69,-26],'交易所');
 
-/* 服务器假人：读构建时快照，不实时查询（浏览器发不了 MC 协议） */
+/* 假人目录：渲染清单，status 仅作参考 */
 fetch('data/bots.json').then(r=>r.ok?r.json():Promise.reject(r.status)).then(d=>{
-  const dot=document.querySelector('#srv-dot'), line=document.querySelector('#srv-line');
-  const time=document.querySelector('#srv-time'), list=document.querySelector('#bot-list');
-  if(d.serverOnline===true){
-    dot.style.background='#4ade80'; dot.style.boxShadow='0 0 10px #4ade80';
-    line.textContent=`服务器在线 · ${d.onlineCount ?? '?'} / ${d.maxPlayers ?? '?'} 人${d.version?' · '+d.version:''}`;
-  }else if(d.serverOnline===false){
-    dot.style.background='#f87171'; dot.style.boxShadow='0 0 10px #f87171';
-    line.textContent='服务器当前不可达';
-  }else{
-    line.textContent='尚未检查';
+  const list=document.querySelector('#bot-list'), hint=document.querySelector('#bot-hint');
+  const bots=d.bots||[];
+  list.replaceChildren();
+  if(!bots.length){ list.textContent='目录还是空的。'; return; }
+  for(const b of bots){
+    const card=document.createElement('div');
+    card.className='botcard liquid-glass';
+    const c=document.createElement('div'); c.className='liquid-glass__content';
+
+    const head=document.createElement('div'); head.className='bothead';
+    const dot=document.createElement('span'); dot.className='botdot';
+    if(b.status==='online'){ dot.style.background='#4ade80'; dot.style.boxShadow='0 0 8px #4ade80'; }
+    else if(b.status==='offline'){ dot.style.background='#475569'; }
+    const nm=document.createElement('code'); nm.className='botname'; nm.textContent=b.name;
+    head.append(dot,nm); c.append(head);
+
+    const fields=[['用途',b.purpose],['位置',b.location],['维护',b.owner],['召唤',b.howTo],['备注',b.notes]];
+    for(const [label,val] of fields){
+      if(!val) continue;
+      const row=document.createElement('div'); row.className='botrow';
+      const l=document.createElement('b'); l.textContent=label;
+      const v=document.createElement('span'); v.textContent=val;
+      row.append(l,v); c.append(row);
+    }
+    const filled=fields.filter(([,v])=>v).length;
+    if(filled===0){
+      const row=document.createElement('div'); row.className='botrow';
+      const v=document.createElement('span'); v.className='botmiss';
+      v.textContent='除了名字什么都还没填，等熟悉的人补。';
+      row.append(v); c.append(row);
+    }
+    card.append(c); list.append(card);
   }
   if(d.lastChecked){
-    const t=new Date(d.lastChecked);
-    const diff=Math.round((Date.now()-t.getTime())/60000);
-    const pad=v=>String(v).padStart(2,'0');
-    time.textContent=`检查于 ${t.getMonth()+1}/${t.getDate()} ${pad(t.getHours())}:${pad(t.getMinutes())}`
-      +(diff>=0&&diff<120?`（${diff} 分钟前）`:'');
-  }
-  const bots=(d.bots||[]).filter(b=>b.status==='online');
-  list.replaceChildren();
-  if(!bots.length){ list.textContent='当前没有检测到在线假人。'; return; }
-  for(const b of bots){
-    const row=document.createElement('div');
-    row.style.cssText='display:flex;align-items:center;gap:9px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.08)';
-    const s=document.createElement('span');
-    s.style.cssText='width:7px;height:7px;border-radius:50%;background:#4ade80;box-shadow:0 0 8px #4ade80;flex:none';
-    const n=document.createElement('code');
-    n.textContent=b.name; n.style.cssText='font-size:12.8px;color:#fff;background:rgba(255,255,255,.1);padding:2px 8px;border-radius:6px';
-    const u=document.createElement('span');
-    u.textContent=b.purpose||(b.location?('在 '+b.location):'用途待补');
-    u.style.cssText='font-size:12px;color:rgba(255,255,255,.5);margin-left:auto;text-align:right';
-    row.append(s,n,u); list.append(row);
+    const t=new Date(d.lastChecked), pad=v=>String(v).padStart(2,'0');
+    hint.textContent=`在线状态只是 ${t.getMonth()+1}/${t.getDate()} ${pad(t.getHours())}:${pad(t.getMinutes())} 那次检查的结果，不代表现在还在挂机。`;
   }
 }).catch(e=>{
   const list=document.querySelector('#bot-list');
-  if(list) list.textContent='假人数据读取失败（'+e+'）';
+  if(list) list.textContent='假人目录读取失败（'+e+'）';
 });
 </script></body></html>

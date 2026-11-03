@@ -1,18 +1,20 @@
 {
-  "_说明": "服务器假人清单。serverOnline / onlineCount / lastChecked 和每个假人的 status 由 scripts/check_bots.py 自动更新；name 之外的字段手填。",
-  "_待补": "SLP 只能看到在线假人，离线假人不会出现在列表里。知道的其他假人直接往 bots 数组里加，name 写成游戏内 ID。",
+  "_说明": "假人目录。name 之外的字段手填；status 由 scripts/check_bots.py 辅助更新，仅作参考，不是实时在线。",
+  "_待补": "目前只确认到 bot_sleep 一个。其他假人把游戏内 ID 加进 bots 数组即可，字段不认识就留空。",
   "serverOnline": true,
   "onlineCount": 1,
   "maxPlayers": 200,
+  "version": "26.3",
   "lastChecked": "2026-11-03T20:16:10+08:00",
   "bots": [
     {
       "name": "bot_sleep",
       "purpose": null,
       "location": null,
-      "status": "online",
-      "notes": "服务器在线列表中实测到的假人，用途与所在位置待补。"
+      "owner": null,
+      "howTo": null,
+      "notes": "服务器在线列表中实测到的假人，用途与所在位置待补。",
+      "status": "online"
     }
-  ],
-  "version": "26.3"
+  ]
 }
