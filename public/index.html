@@ -216,7 +216,7 @@ fetch('data/bots.json').then(r=>r.ok?r.json():Promise.reject(r.status)).then(d=>
   }
   if(d.lastChecked){
     const t=new Date(d.lastChecked), pad=v=>String(v).padStart(2,'0');
-    hint.textContent=`在线状态只是 ${t.getMonth()+1}/${t.getDate()} ${pad(t.getHours())}:${pad(t.getMinutes())} 那次检查的结果，不代表现在还在挂机。`;
+    hint.textContent=`在线状态最后更新于 ${t.getMonth()+1}/${t.getDate()} ${pad(t.getHours())}:${pad(t.getMinutes())}，仅作参考，不代表现在还在挂机。`;
   }
 }).catch(e=>{
   const list=document.querySelector('#bot-list');
