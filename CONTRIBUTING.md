@@ -2,6 +2,8 @@
 
 这份讲的是 **JSON 数据怎么填**：设施、假人的字段含义。
 
+> 用 AI 助手（Claude Code / Codex / Cursor 等）改的话，让它先读根目录的 [AGENTS.md](AGENTS.md)，那里有完整的项目约定和踩坑记录。
+
 **写文章 / 加页面**请看站点上的 [怎么改文档](https://mc-zixing-map-site.pages.dev/docs/contributing/) —— 那边讲的是 Markdown 怎么写、新页面怎么加。
 
 改完提交到 `master`，Cloudflare 会自动构建部署（约 1 分钟）。
