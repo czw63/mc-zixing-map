@@ -26,7 +26,7 @@ nav{border-radius:999px!important;display:flex;align-items:center;gap:3px;paddin
 nav a{font-size:13.5px;color:rgba(255,255,255,.75);padding:8px 14px;border-radius:999px;text-decoration:none;transition:.18s}
 nav a:hover{background:rgba(255,255,255,.14);color:#fff}
 nav a.on{background:rgba(255,255,255,.2);color:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.45)}
-.join{padding:9px 19px;border-radius:999px;font-size:13.5px;font-weight:700;color:#0b1020;
+a.join{display:inline-block;text-decoration:none;padding:9px 19px;border-radius:999px;font-size:13.5px;font-weight:700;color:#0b1020;
  background:linear-gradient(180deg,#fff,#dbe6ff);box-shadow:inset 0 1px 0 #fff,0 6px 20px rgba(255,255,255,.28)}
 
 .hero{padding:58px 2px 28px}
@@ -36,19 +36,40 @@ h1{font-size:52px;line-height:1.12;font-weight:700;letter-spacing:-1.4px;margin-
 }
 h1 .dim{color:rgba(255,255,255,.62)}
 .hero p{margin-top:15px;font-size:16px;color:rgba(255,255,255,.8);line-height:1.7;max-width:560px}
-.acts{display:flex;gap:11px;margin-top:26px}
-.acts .liquid-glass{border-radius:999px!important;padding:0;--lg-radius:999px;--lg-opacity:.15}
-.acts .liquid-glass__content{padding:12px 23px;font-size:14px;font-weight:600}
+.acts{display:flex;gap:11px;margin-top:26px;flex-wrap:wrap}
+a.act,button.act{border-radius:999px!important;padding:0;--lg-radius:999px;--lg-opacity:.15;text-decoration:none;color:inherit;display:inline-block;transition:.18s;border:0;background:none;font:inherit;cursor:pointer}
+a.act:hover{--lg-opacity:.24}
+.act .liquid-glass__content{padding:12px 23px;font-size:14px;font-weight:600;white-space:nowrap}
 
 /* 地图卡：玻璃框 + 内部真实地图 */
 .mapcard{--lg-radius:30px;padding:11px;margin-top:12px}
 .mtop{display:flex;align-items:center;gap:9px;padding:3px 3px 11px}
-.srch{flex:1;border-radius:999px!important;padding:0;--lg-radius:999px;--lg-opacity:.12}
-.srch .liquid-glass__content{padding:12px 18px;font-size:13.5px;color:rgba(255,255,255,.62)}
+.srch{flex:1;border-radius:999px!important;padding:0;--lg-radius:999px;--lg-opacity:.12;position:relative}
+.srch .liquid-glass__content{padding:0}
+.srch input{width:100%;background:none;border:0;outline:none;color:#fff;font:inherit;font-size:13.5px;
+ padding:12px 18px;border-radius:999px}
+.srch input::placeholder{color:rgba(255,255,255,.62)}
+.sug{position:absolute;left:0;right:0;top:calc(100% + 8px);z-index:900;border-radius:16px;overflow:hidden;
+ background:rgba(16,22,36,.96);border:1px solid rgba(255,255,255,.16);box-shadow:0 18px 50px rgba(0,0,0,.6);
+ display:none;max-height:260px;overflow-y:auto;-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px)}
+.sug.on{display:block}
+.sug button{display:flex;width:100%;gap:10px;align-items:baseline;background:none;border:0;color:#fff;
+ font:inherit;font-size:13px;text-align:left;padding:10px 16px;cursor:pointer}
+.sug button:hover,.sug button.hl{background:rgba(255,255,255,.1)}
+.sug .sn{font-weight:600}
+.sug .sc{color:rgba(255,255,255,.45);font-size:11.5px;margin-left:auto;font-family:ui-monospace,monospace}
+.sug .empty{padding:12px 16px;font-size:12.5px;color:rgba(255,255,255,.5)}
 .sel{border-radius:999px!important;padding:0;--lg-radius:999px;--lg-opacity:.12}
-.sel .liquid-glass__content{padding:12px 17px;font-size:13px;color:rgba(255,255,255,.9);font-weight:500}
+.sel .liquid-glass__content{padding:0}
+.sel select{appearance:none;-webkit-appearance:none;background:none;border:0;outline:none;color:rgba(255,255,255,.9);
+ font:inherit;font-size:13px;font-weight:500;padding:12px 30px 12px 17px;border-radius:999px;cursor:pointer;color-scheme:dark}
+.sel{position:relative}
+.sel::after{content:"▾";position:absolute;right:13px;top:50%;transform:translateY(-50%);pointer-events:none;
+ font-size:11px;color:rgba(255,255,255,.6)}
+.sel select option{background:#141c2c;color:#fff}
 #map{height:430px;border-radius:22px;overflow:hidden;background:#0b1018;
  box-shadow:inset 0 0 0 1px rgba(255,255,255,.12),inset 0 3px 20px rgba(0,0,0,.55)}
+#map:fullscreen{border-radius:0;height:100vh}
 .leaflet-container{background:#0b1018!important}
 .leaflet-tile{image-rendering:pixelated}
 .leaflet-control-attribution{font-size:9px;background:rgba(11,16,24,.72)!important;color:#6e7789!important}
@@ -64,7 +85,9 @@ h1 .dim{color:rgba(255,255,255,.62)}
 .tag{font-size:10.5px;padding:3px 10px;border-radius:999px;background:rgba(94,234,212,.2);
  color:#a7f3ea;border:1px solid rgba(94,234,212,.4);font-weight:600}
 .bar small{display:block;margin-top:4px;font-size:12.5px;color:rgba(255,255,255,.68)}
-.go{margin-left:auto;border-radius:999px!important;padding:0;--lg-radius:999px;--lg-opacity:.16}
+a.go{margin-left:auto;border-radius:999px!important;padding:0;--lg-radius:999px;--lg-opacity:.16;
+ text-decoration:none;color:inherit;display:inline-block;transition:.18s;flex:none}
+a.go:hover{--lg-opacity:.26}
 .go .liquid-glass__content{padding:10px 18px;font-size:13px;font-weight:600;white-space:nowrap}
 
 h2{font-size:13px;letter-spacing:1.4px;color:rgba(255,255,255,.62);font-weight:600;margin:42px 4px 15px;
@@ -72,7 +95,7 @@ h2{font-size:13px;letter-spacing:1.4px;color:rgba(255,255,255,.62);font-weight:6
 .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:13px}
 .c{--lg-radius:22px;padding:0;transition:transform .22s}
 .c:hover{transform:translateY(-3px)}
-a.c{color:inherit;text-decoration:none}
+a.c{color:inherit;text-decoration:none;display:block}
 .c .liquid-glass__content{padding:19px}
 .cm{width:34px;height:34px;border-radius:11px;display:grid;place-items:center;font-size:16px;margin-bottom:13px;
  background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.26);box-shadow:inset 0 1px 0 rgba(255,255,255,.45)}
@@ -95,6 +118,12 @@ a.c{color:inherit;text-decoration:none}
 .row span{color:rgba(255,255,255,.5);font-size:12.5px}
 .note{font-size:12.8px;color:#fde68a;line-height:1.7;--lg-opacity:.1}
 footer{margin:40px 0 0;text-align:center;font-size:12px;color:rgba(255,255,255,.5)}
+@media(max-width:760px){
+ h1{font-size:36px}
+ .two{grid-template-columns:1fr}
+ .mtop{flex-wrap:wrap}
+ .srch{flex-basis:100%}
+}
 </style></head><body>
 <svg aria-hidden="true" focusable="false" width="0" height="0" xmlns="http://www.w3.org/2000/svg">
   <filter id="liquid-glass-filter" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
@@ -110,8 +139,8 @@ footer{margin:40px 0 0;text-align:center;font-size:12px;color:rgba(255,255,255,.
 <nav class="liquid-glass">
 <div class="liquid-glass__content" style="display:flex;align-items:center;gap:3px;flex:1">
 <div class="brand"><div class="logo"></div>紫星服务器</div><div class="grow"></div>
-<a class="on" href="#">主页</a><a href="#">入服指南</a><a href="#">设施手册</a><a href="#">交通</a><a href="#">服规</a>
-<span class="join">入服</span></div></nav>
+<a class="on" href="/">主页</a><a href="/docs/join/">入服指南</a><a href="/docs/facilities/">设施手册</a><a href="/docs/transport/">交通</a><a href="/docs/rules/">服规</a>
+<a class="join" href="/docs/join/">入服</a></div></nav>
 
 <div class="hero">
 <div class="eyebrow liquid-glass">
@@ -119,33 +148,39 @@ footer{margin:40px 0 0;text-align:center;font-size:12px;color:rgba(255,255,255,.
 <h1>机器在哪，<br><span class="dim">地图上直接看。</span></h1>
 <p>三十多台农场与机器，坐标、开关位置、挂机方法，全在一个页面里。</p>
 <div class="acts">
-<div class="liquid-glass"><div class="liquid-glass__content">入服指南</div></div>
-<div class="liquid-glass"><div class="liquid-glass__content">查找设施</div></div>
-<div class="liquid-glass"><div class="liquid-glass__content">全屏地图 ↗</div></div>
+<a class="act liquid-glass" href="/docs/join/"><div class="liquid-glass__content">入服指南</div></a>
+<a class="act liquid-glass" href="#map" id="jump-search"><div class="liquid-glass__content">查找设施</div></a>
+<button class="act liquid-glass" type="button" id="fullscreen-map"><div class="liquid-glass__content">全屏地图 ↗</div></button>
 </div>
 </div>
 
 <div class="mapcard liquid-glass">
 <div class="liquid-glass__content">
 <div class="mtop">
-<div class="srch liquid-glass"><div class="liquid-glass__content">⌕&nbsp;&nbsp;搜索地点或机器名……</div></div>
-<div class="sel liquid-glass"><div class="liquid-glass__content">主世界 ▾</div></div>
-<div class="sel liquid-glass"><div class="liquid-glass__content">全部设施 ▾</div></div>
+<div class="srch liquid-glass"><div class="liquid-glass__content">
+<input id="search-input" type="search" autocomplete="off" placeholder="⌕  搜索地点或机器名……">
+</div><div class="sug" id="search-sug"></div></div>
+<div class="sel liquid-glass"><div class="liquid-glass__content">
+<select id="dim-select"><option value="overworld">主世界</option></select>
+</div></div>
+<div class="sel liquid-glass"><div class="liquid-glass__content">
+<select id="cat-select"><option value="all">全部设施</option></select>
+</div></div>
 </div>
 <div id="map"></div>
 <div class="bar liquid-glass">
 <div class="liquid-glass__content"><div class="ic">◈</div>
-<div><h4>工业村<span class="tag">中心</span></h4><small>主世界 · X 553 / Y 70 / Z -268 · 村民交易与物资集散</small></div>
-<div class="go liquid-glass"><div class="liquid-glass__content">查看使用说明 →</div></div></div></div>
+<div><h4 id="bar-name">工业村<span class="tag" id="bar-tag">中心</span></h4><small id="bar-sub">主世界 · X 553 / Y 70 / Z -268 · 村民交易与物资集散</small></div>
+<a class="go liquid-glass" href="/docs/facilities/"><div class="liquid-glass__content">查看使用说明 →</div></a></div></div>
 </div></div>
 
 <h2>手 册 分 类</h2>
 <div class="cards">
-<div class="c liquid-glass"><div class="liquid-glass__content"><div class="cm">⚙</div><h5>机械与农场</h5><p>女巫塔、袭击塔、猪人塔<br>开关位置与挂机方法</p></div></div>
-<div class="c liquid-glass"><div class="liquid-glass__content"><div class="cm">⇄</div><h5>交通物流</h5><p>地狱交通与传送门枢纽<br>主城到各区域的走法</p></div></div>
-<div class="c liquid-glass"><div class="liquid-glass__content"><div class="cm">▤</div><h5>公共仓储</h5><p>物资在哪、怎么取<br>存取约定</p></div></div>
-<div class="c liquid-glass"><div class="liquid-glass__content"><div class="cm">⌘</div><h5>常用指令</h5><p>返回主城、假人召唤<br>查询类指令</p></div></div>
-<a class="c liquid-glass" href="#bots"><div class="liquid-glass__content"><div class="cm">◉</div><h5>假人目录</h5><p>服务器上都有哪些假人<br>各自负责什么</p></div></a>
+<a class="c liquid-glass" href="/docs/facilities/"><div class="liquid-glass__content"><div class="cm">⚙</div><h5>机械与农场</h5><p>女巫塔、袭击塔、猪人塔<br>开关位置与挂机方法</p></div></a>
+<a class="c liquid-glass" href="/docs/transport/"><div class="liquid-glass__content"><div class="cm">⇄</div><h5>交通物流</h5><p>地狱交通与传送门枢纽<br>主城到各区域的走法</p></div></a>
+<a class="c liquid-glass" href="/docs/facilities/"><div class="liquid-glass__content"><div class="cm">▤</div><h5>公共仓储</h5><p>物资在哪、怎么取<br>存取约定</p></div></a>
+<a class="c liquid-glass" href="/docs/join/"><div class="liquid-glass__content"><div class="cm">⌘</div><h5>常用指令</h5><p>返回主城、假人召唤<br>查询类指令</p></div></a>
+<a class="c liquid-glass" href="/docs/bots/"><div class="liquid-glass__content"><div class="cm">◉</div><h5>假人目录</h5><p>服务器上都有哪些假人<br>各自负责什么</p></div></a>
 </div>
 
 <h2 id="bots">假 人 目 录</h2>
@@ -172,9 +207,146 @@ const map=L.map('map',{crs,minZoom:0,maxZoom:8,zoomControl:true});
 L.tileLayer('https://tiles.czw06.fun/tiles/overworld/{z}/{x}/{y}.webp',{tileSize:512,noWrap:true,minZoom:0,maxZoom:8,maxNativeZoom:7,
  errorTileUrl:'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=',attribution:'Xaero · Leaflet'}).addTo(map);
 map.setView([268,553],6);
-function pin(p,n){const m=L.marker([-p[1],p[0]],{icon:L.divIcon({className:'',html:'<div class="pin"></div>',iconSize:[13,13],iconAnchor:[6,6]})}).addTo(map);m.bindTooltip(n,{direction:'top',offset:[0,-9]});return m;}
-pin([-73,-2104],'女巫塔');pin([553,-268],'工业村').openTooltip();pin([-2136,696],'袭击塔');
-pin([1495,165],'繁华森林');pin([1296,-1608],'龙宫');pin([1375,-2136],'蠹虫笼');pin([69,-26],'交易所');
+
+/* 分类中文名 */
+const CAT_LABEL={'mob-farm':'机械与农场','transport':'交通物流','trading':'交易仓储','other':'其他'};
+const DIM_LABEL={overworld:'主世界',nether:'下界',end:'末地'};
+
+/* 设施数据 → 地图 pin + 搜索索引，全部由 data/facilities.json 驱动 */
+const markers={};      // id -> L.marker
+let facilities=[];
+
+function makeIcon(){
+  return L.divIcon({className:'',html:'<div class="pin"></div>',iconSize:[13,13],iconAnchor:[6,6]});
+}
+
+function setBar(f){
+  const c=f.coords||{};
+  document.querySelector('#bar-name').textContent=f.name;
+  const tag=document.querySelector('#bar-tag');
+  tag.textContent = f.id==='industrial-village' ? '中心' : (CAT_LABEL[f.category]||'设施');
+  document.querySelector('#bar-sub').textContent =
+    `${DIM_LABEL[f.dimension]||f.dimension} · X ${c.x} / Y ${c.y} / Z ${c.z}` + (f.notes?` · ${f.notes}`:'');
+}
+
+function focusFacility(f, open){
+  const m=markers[f.id];
+  if(!m) return;
+  map.flyTo(m.getLatLng(), Math.max(map.getZoom(),7), {duration:.7});
+  if(open) m.openTooltip();
+  setBar(f);
+}
+
+/* 搜索：匹配名称与别名 */
+const input=document.querySelector('#search-input');
+const sug=document.querySelector('#search-sug');
+let sugItems=[], sugIndex=-1;
+
+function renderSug(q){
+  q=q.trim().toLowerCase();
+  sugItems = q ? facilities.filter(f=>{
+    const hay=[f.name, ...(f.aliases||[])].join(' ').toLowerCase();
+    return hay.includes(q);
+  }).slice(0,8) : [];
+  sugIndex=-1;
+  sug.replaceChildren();
+  if(!q) { sug.classList.remove('on'); return; }
+  if(!sugItems.length){
+    const d=document.createElement('div'); d.className='empty'; d.textContent='没找到这个地点';
+    sug.append(d); sug.classList.add('on'); return;
+  }
+  sugItems.forEach((f,i)=>{
+    const b=document.createElement('button'); b.type='button';
+    const n=document.createElement('span'); n.className='sn'; n.textContent=f.name;
+    const c=f.coords||{};
+    const p=document.createElement('span'); p.className='sc'; p.textContent=`${c.x}, ${c.z}`;
+    b.append(n,p);
+    b.addEventListener('click',()=>{
+      focusFacility(f,true);
+      input.value=f.name;
+      sug.classList.remove('on');
+    });
+    sug.append(b);
+  });
+  sug.classList.add('on');
+}
+
+input.addEventListener('input', e=>renderSug(e.target.value));
+input.addEventListener('focus', e=>{ if(e.target.value) renderSug(e.target.value); });
+input.addEventListener('keydown', e=>{
+  const btns=[...sug.querySelectorAll('button')];
+  if(e.key==='ArrowDown'||e.key==='ArrowUp'){
+    if(!btns.length) return;
+    e.preventDefault();
+    sugIndex = e.key==='ArrowDown' ? Math.min(sugIndex+1,btns.length-1) : Math.max(sugIndex-1,0);
+    btns.forEach((b,i)=>b.classList.toggle('hl',i===sugIndex));
+    return;
+  }
+  if(e.key==='Enter'){
+    e.preventDefault();
+    const pick = sugIndex>=0 ? sugItems[sugIndex] : sugItems[0];
+    if(pick){ focusFacility(pick,true); input.value=pick.name; sug.classList.remove('on'); }
+    return;
+  }
+  if(e.key==='Escape'){ sug.classList.remove('on'); input.blur(); }
+});
+document.addEventListener('click', e=>{
+  if(!e.target.closest('.srch')) sug.classList.remove('on');
+});
+
+/* 分类筛选：只显示选中类别的 pin */
+const catSel=document.querySelector('#cat-select');
+catSel.addEventListener('change', ()=>{
+  const v=catSel.value;
+  for(const f of facilities){
+    const m=markers[f.id];
+    if(!m) continue;
+    const show = v==='all' || f.category===v;
+    if(show){ if(!map.hasLayer(m)) m.addTo(map); }
+    else if(map.hasLayer(m)) map.removeLayer(m);
+  }
+});
+
+/* Hero 按钮：查找设施 → 滚到地图并聚焦搜索框 */
+document.querySelector('#jump-search').addEventListener('click', e=>{
+  e.preventDefault();
+  document.querySelector('#map').scrollIntoView({behavior:'smooth', block:'center'});
+  setTimeout(()=>input.focus(), 420);
+});
+
+/* 全屏地图 */
+document.querySelector('#fullscreen-map').addEventListener('click', e=>{
+  e.preventDefault();
+  const el=document.querySelector('#map');
+  if(document.fullscreenElement) document.exitFullscreen();
+  else el.requestFullscreen?.().catch(()=>{});
+});
+
+/* 载入设施数据 */
+fetch('data/facilities.json').then(r=>r.ok?r.json():Promise.reject(r.status)).then(d=>{
+  facilities=(d.facilities||[]).filter(f=>f.coords);
+  for(const f of facilities){
+    const m=L.marker([-f.coords.z, f.coords.x], {icon:makeIcon(), title:f.name}).addTo(map);
+    m.bindTooltip(f.name, {direction:'top', offset:[0,-9]});
+    m.on('click', ()=>setBar(f));
+    markers[f.id]=m;
+  }
+  // 分类下拉
+  const cats=[...new Set(facilities.map(f=>f.category).filter(Boolean))];
+  for(const c of cats){
+    const o=document.createElement('option');
+    o.value=c; o.textContent=CAT_LABEL[c]||c;
+    catSel.append(o);
+  }
+  // 默认聚焦工业村
+  const center=facilities.find(f=>f.id==='industrial-village') || facilities[0];
+  if(center){
+    markers[center.id]?.openTooltip();
+    setBar(center);
+  }
+}).catch(e=>{
+  document.querySelector('#bar-sub').textContent='设施数据读取失败（'+e+'）';
+});
 
 /* 假人目录：纯清单渲染，不查服务器状态 */
 fetch('data/bots.json').then(r=>r.ok?r.json():Promise.reject(r.status)).then(d=>{
